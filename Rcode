@@ -30,5 +30,42 @@ df4 <- data.frame(
 	peakh = c(dBed$Total)
 )
 
-df5 = do.call("rbind", list(df, df1, df2, df3, df4))
-plot(df5$coord, df5$peakh, type="h")
+new= do.call("rbind", list(df, df1, df2, df3, df4))
+plot(new$coord, new$peakh, type="h")
+
+////////
+my_dataH3K27 <- read.csv('Sham_K27Me3.bedGraph', head = TRUE, sep="")
+
+ds<-my_data[(my_data$chrom=="chr1"),]
+d<-my_dataH3K27[(my_dataH3K27$track=="chr1"),]
+valuee <- ds[[2]][1]
+dBed<-d[( d$type.bedGraph < as.numeric(valuee)+200000 ),]
+dBed<-dBed[( dBed$type.bedGraph > as.numeric(valuee)-200000 ),]
+
+df <- data.frame(
+	coord = c(dBed$type.bedGraph),
+	peakh = c(dBed$Total)
+)
+df1 <- data.frame(
+	coord = c(dBed$name..Combined.Sham_K27Me3),
+	peakh = c(dBed$Total)
+)
+df2 <- data.frame(
+	coord = c(dBed$type.bedGraph     + ((dBed$name..Combined.Sham_K27Me3-dBed$type.bedGraph)*0.5) ),
+	peakh = c(dBed$Total)
+)
+df3 <- data.frame(
+	coord = c(dBed$type.bedGraph     + ((dBed$name..Combined.Sham_K27Me3-dBed$type.bedGraph)*0.2) ),
+	peakh = c(dBed$Total)
+)
+df4 <- data.frame(
+	coord = c(dBed$type.bedGraph     + ((dBed$name..Combined.Sham_K27Me3-dBed$type.bedGraph)*0.7) ),
+	peakh = c(dBed$Total)
+)
+
+new1= do.call("rbind", list(df, df1, df2, df3, df4))
+plot(new1$coord, new1$peakh, type="h")
+
+///overlay two plots
+plot(new$coord, new$peakh,type="h",col="red")
+lines(new1$coord,new1$peakh,col="green")
