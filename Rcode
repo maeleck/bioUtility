@@ -1,0 +1,34 @@
+setwd("C:/Users/spiri/Desktop/LabWork/BrowserMultiPanels")
+
+my_data <- read.csv('146coords.csv', head = TRUE, sep=",")
+my_dataH3K4me3 <- read.csv('Sham_H3K4me3.bedGraph', head = TRUE, sep="")
+
+ds<-my_data[(my_data$chrom=="chr1"),]
+d<-my_dataH3K4me3[(my_dataH3K4me3$track=="chr1"),]
+valuee <- ds[[2]][1]
+dBed<-d[( d$type.bedGraph < as.numeric(valuee)+200000 ),]
+dBed<-dBed[( dBed$type.bedGraph > as.numeric(valuee)-200000 ),]
+
+df <- data.frame(
+	coord = c(dBed$type.bedGraph),
+	peakh = c(dBed$Total)
+)
+df1 <- data.frame(
+	coord = c(dBed$name..Combined_Sham_H3K4me3_TagDirectory),
+	peakh = c(dBed$Total)
+)
+df2 <- data.frame(
+	coord = c(dBed$type.bedGraph     + ((dBed$name..Combined_Sham_H3K4me3_TagDirectory-dBed$type.bedGraph)*0.5) ),
+	peakh = c(dBed$Total)
+)
+df3 <- data.frame(
+	coord = c(dBed$type.bedGraph     + ((dBed$name..Combined_Sham_H3K4me3_TagDirectory-dBed$type.bedGraph)*0.2) ),
+	peakh = c(dBed$Total)
+)
+df4 <- data.frame(
+	coord = c(dBed$type.bedGraph     + ((dBed$name..Combined_Sham_H3K4me3_TagDirectory-dBed$type.bedGraph)*0.7) ),
+	peakh = c(dBed$Total)
+)
+
+df5 = do.call("rbind", list(df, df1, df2, df3, df4))
+plot(df5$coord, df5$peakh, type="h")
