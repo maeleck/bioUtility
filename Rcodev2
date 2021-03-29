@@ -1,0 +1,79 @@
+my_dataH3K4me3 <- fread("ShamH3K4me3.bedGraph.gz")
+my_dataH3K4me3 <- fread("Egr2.bedGraph.gz")
+my_dataH3K4me3 <- fread("K27Me3.bedGraph.gz")
+my_dataH3K4me3 <- fread("cJUN8dpi.bedGraph.gz")
+my_dataH3K4me3 <- fread("H2AmUb.bedGraph.gz")
+my_dataH3K4me3 <- fread("InjuryK27Ac.bedGraph.gz")
+my_dataH3K4me3 <- fread("SOX10.bedGraph.gz")
+
+setwd("C:/Users/spiri/Desktop/LabWork/BrowserMultiPanels")
+library(data.table)
+my_data <- read.csv('146coords.csv', head = TRUE, sep=",")
+ds<-my_data[(my_data$chrom=="chr1"),]
+geneTSS <- ds[[2]][1]
+
+my_dataH3K4me3 <- fread("ShamH3K4me3.bedGraph.gz")
+d<-my_dataH3K4me3[(my_dataH3K4me3[[1]]=="chr1"),]
+dBed<-d[( d[[2]] < as.numeric(geneTSS)+200000 ),]
+dBed<-dBed[( dBed[[2]] > as.numeric(geneTSS)-200000 ),]
+DF_list = list()
+for (i in 1:5){
+    DF_list[[i]] <-         
+	data.frame(
+	coord = c(dBed[[2]]     + ((dBed[[3]]-dBed[[2]])*(i*0.2) ) ),
+	peakh = c(dBed[[4]])	)
+    }
+
+new= do.call("rbind", DF_list)
+plot(new$coord, new$peakh, type="h")
+
+my_dataH3K4me3 <- fread("K27Me3.bedGraph.gz")
+d<-my_dataH3K4me3[(my_dataH3K4me3[[1]]=="chr1"),]
+dBed<-d[( d[[2]] < as.numeric(geneTSS)+200000 ),]
+dBed<-dBed[( dBed[[2]] > as.numeric(geneTSS)-200000 ),]
+DF_list = list()
+for (i in 1:5){
+    DF_list[[i]] <-         
+	data.frame(
+	coord = c(dBed[[2]]     + ((dBed[[3]]-dBed[[2]])*(i*0.2) ) ),
+	peakh = c(dBed[[4]])	)
+    }
+
+new1= do.call("rbind", DF_list)
+plot(new$coord, new$peakh,type="h",col="red")
+lines(new1$coord,new1$peakh,col="green")
+//////////////////////////////////////////////
+my_dataH3K4me3 <- fread("H2AmUb.bedGraph.gz")
+d<-my_dataH3K4me3[(my_dataH3K4me3[[1]]=="chr1"),]
+dBed<-d[( d[[2]] < as.numeric(geneTSS)+200000 ),]
+dBed<-dBed[( dBed[[2]] > as.numeric(geneTSS)-200000 ),]
+DF_list = list()
+for (i in 1:5){
+    DF_list[[i]] <-         
+	data.frame(
+	coord = c(dBed[[2]]     + ((dBed[[3]]-dBed[[2]])*(i*0.2) ) ),
+	peakh = c(dBed[[4]])	)
+    }
+
+new2= do.call("rbind", DF_list)
+plot(new$coord, new$peakh,type="h",col="red")
+lines(new1$coord,new1$peakh,col="green")
+lines(new2$coord,new2$peakh,col="purple")
+/////////////////////////////////////////////////
+my_dataH3K4me3 <- fread("SOX10.bedGraph.gz")
+d<-my_dataH3K4me3[(my_dataH3K4me3[[1]]=="chr1"),]
+dBed<-d[( d[[2]] < as.numeric(geneTSS)+200000 ),]
+dBed<-dBed[( dBed[[2]] > as.numeric(geneTSS)-200000 ),]
+DF_list = list()
+for (i in 1:5){
+    DF_list[[i]] <-         
+	data.frame(
+	coord = c(dBed[[2]]     + ((dBed[[3]]-dBed[[2]])*(i*0.2) ) ),
+	peakh = c(dBed[[4]])	)
+    }
+
+new3= do.call("rbind", DF_list)
+plot(new$coord, new$peakh,type="h",col="red")
+lines(new1$coord,new1$peakh,col="green")
+lines(new2$coord,new2$peakh,col="purple")
+lines(new3$coord,new3$peakh,col="yellow")
