@@ -1,13 +1,24 @@
+
+'&' <- function(x, y)paste0(x,y)
 setwd("C:/Users/spiri/Desktop/LabWork/BrowserMultiPanels")
 library(data.table)
 peakf = 10
-chrom = "chr1"
 my_dataH3K4me3 <- fread("SOX10.bedGraph.gz")
 d<-my_dataH3K4me3[(my_dataH3K4me3[[4]]>peakf),]
-d<-d[(d[[1]]==chrom),]
 
-plot(c(1, 300000000), c(0, 10), type= "n", xlab = "", ylab = "")
-for (i in 1:nrow(d)){
-    rect(d[[2]][i], 0, d[[2]][i], 10, col = "green", border = "blue")
+
+layout_matrix_1 <- matrix(20:1, ncol = 5)  
+layout(layout_matrix_1)  
+
+
+for (j in 1:20) {
+nam = "chr"& toString(j)
+dd<-d[(d[[1]]== nam ),]
+plot(c(1, 300000000), c(0, 10), type= "n", xlab = "Mouse Chromosome "& toString(j), ylab = "")
+for (i in 1:nrow(dd)){
+    rect(dd[[2]][i], 0, dd[[2]][i], 10, col = "green", border = "blue")
     }
+
+
+}
 
